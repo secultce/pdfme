@@ -1,0 +1,1 @@
+{"template1":{"schemas":[[{"name":"Andie","type":"text","position":{"x":10,"y":30},"width":50,"height":20},{"name":"Anddie","type":"text","position":{"x":10,"y":60},"width":50,"height":20},{"name":"Andddie","type":"text","position":{"x":10,"y":90},"width":50,"height":20}]],"basePdf":{"width":210,"height":297,"padding":[10,10,10,10]},"pdfmeVersion":"5.0.0"}}

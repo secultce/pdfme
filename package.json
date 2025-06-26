@@ -1,0 +1,24 @@
+{
+  "name": "pdfme",
+  "version": "1.0.0",
+  "description": "",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel watch manifest.json --host localhost --config @parcel/config-webextension",
+    "dev": "parcel src/index.html",
+    "build": "parcel build manifest.json --config @parcel/config-webextension"
+  },
+  "dependencies": {
+    "@pdfme/common": "^5.4.0",
+    "@pdfme/generator": "^5.4.0",
+    "@pdfme/ui": "^5.4.0",
+    "bootstrap": "^5.3.7",
+    "signature_pad": "^5.0.10"
+  },
+  "devDependencies": {
+    "@parcel/core": "^2.14.1",
+    "@parcel/transformer-sass": "^2.15.4",
+    "parcel": "^2.15.4",
+    "process": "^0.11.10"
+  }
+}
