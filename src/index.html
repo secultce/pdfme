@@ -3,27 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Criador de templates</title>
 
     <link rel="stylesheet" href="scss/styles.scss" />
-    <script defer type="module" src="app.ts"></script>
+    <script defer type="module" src="index.tsx"></script>
 </head>
 <body>
-    <header>
-        <h1>Criador de templates</h1>
-        <div class="btn-group">
-            <span class="mx-4">
-                <label for="schemas">Selecionar relatório: </label>
-                <select id="schemas" class="form-control">
-                    <option value="test">Teste</option>
-                    <option value="test2">Teste 2</option>
-                    <option value="test3">Teste 3</option>
-                </select>
-            </span>
-
-            <button type="button" id="save-template" class="btn btn-primary mx-4">Salvar Template</button>
-        </div>
-    </header>
-    <div id="pdfme-box">Hello</div>
+    <div id="root"></div>
 </body>
 </html>

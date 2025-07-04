@@ -2,7 +2,7 @@
   {
     "key": "test",
     "name": "Teste",
-    "schema": [
+    "schemas": [
       [
         {
           "name": "Maxie",
@@ -40,7 +40,7 @@
   {
     "key": "test2",
     "name": "Teste 2",
-    "schema": [
+    "schemas": [
       [
         {
           "name": "Andie",
@@ -78,7 +78,7 @@
   {
     "key": "test3",
     "name": "Teste 3",
-    "schema": [
+    "schemas": [
       [
         {
           "name": "Lexie",
