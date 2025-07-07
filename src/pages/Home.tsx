@@ -8,15 +8,15 @@ import SelectTemplates from "../components/SelectTemplates";
 import { CustomDesigner } from "../utils/designer.ts";
 
 export default function Home() {
-    const [ designer ] = useState(() => new CustomDesigner({} as SchemaType));
-    const [schemaKey, setSchemaKey] = useState<string>('');
+    const [designer] = useState(() => new CustomDesigner({} as SchemaType));
+    const [selectedSchema, setSelectedSchema] = useState<SchemaType | null>(null);
     const [templateKey, setTemplateKey] = useState<string>('new');
     const [templateName, setTemplateName] = useState<string>('');
 
     async function saveTemplateHandler() {
         const template: Template = designer.getDesigner()?.getTemplate();
 
-        if (!template || !schemaKey || !templateKey) {
+        if (!template || !selectedSchema?.key || !templateKey) {
             return;
         }
 
@@ -37,15 +37,22 @@ export default function Home() {
             showLoaderOnConfirm: true,
             ...newTemplateInputOptions,
         });
+
         if (!confirmSave.isConfirmed) {
             return;
         }
 
+        let newName = null, newKey = null;
+        if (typeof confirmSave.value === 'string') {
+            newName = confirmSave.value;
+            newKey = newName.trim().replace(' ', '-');
+        }
+
         const data = {
             template,
-            schemaKey: schemaKey,
-            name: templateName,
-            key: templateKey,
+            schemaKey: selectedSchema?.key,
+            name: newName ?? templateName,
+            key: newKey ?? templateKey,
         };
 
         const saved = await Api.saveTemplate(data);
@@ -66,16 +73,26 @@ export default function Home() {
         }
     }
 
+    function onChooseSchemaHandler(schema: SchemaType) {
+        setSelectedSchema(schema);
+    }
+
+    function onChooseTemplateHandler(key: string, name: string = 'new'): void {
+        setTemplateKey(key);
+        setTemplateName(name);
+
+        if ('new' === key) {
+            designer.changeSchema(selectedSchema as SchemaType);
+        }
+    }
+
     return (
         <>
             <header>
                 <h1>Criador de templates</h1>
                 <div className="btn-group">
-                    <SelectSchemas designer={designer} onChooseHandler={setSchemaKey} identifier="schemas" />
-                    <SelectTemplates designer={designer} onChooseHandler={(key: string, name: string) => {
-                        setTemplateKey(key);
-                        setTemplateName(name);
-                    }} identifier="templates" />
+                    <SelectSchemas designer={designer} onChooseHandler={onChooseSchemaHandler} identifier="schemas" />
+                    <SelectTemplates designer={designer} onChooseHandler={onChooseTemplateHandler} identifier="templates" />
                     <button
                         type="button"
                         id="save-template"

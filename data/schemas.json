@@ -17,6 +17,7 @@
         {
           "name": "Maxxie",
           "type": "table",
+          "content": "[[\"Header1\", \"Header2\"],[\"RowCol1\", \"RowCol2\"]]",
           "position": {
             "x": 10,
             "y": 60

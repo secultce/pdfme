@@ -1,12 +1,12 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import Swal from "sweetalert2";
+import {ChangeEvent, JSX, useEffect, useState} from "react";
 import Api, { type TemplatesContract } from "../../../api.ts";
 import { CustomDesigner } from "../../utils/designer.ts";
+import Toast from "../../utils/swal-toast.ts";
 
 interface SelectTemplatesProps {
     designer: CustomDesigner,
     identifier: string,
-    onChooseHandler: (key: string, name: string) => void
+    onChooseHandler: (key: string, name: string) => void,
 }
 
 export default function SelectTemplates({designer, identifier, onChooseHandler}: SelectTemplatesProps) {
@@ -16,10 +16,10 @@ export default function SelectTemplates({designer, identifier, onChooseHandler}:
         Api.getTemplates()
             .then((templatesResponse: TemplatesContract[]) => setTemplates(templatesResponse))
             .catch((err: Error) => {
-                Swal.fire({
+                Toast.fire({
+                    icon: "error",
                     title: err.message,
                     text: 'Não foi possível obter templates salvos.',
-                    toast: true,
                 });
             });
     }, []);
@@ -29,7 +29,6 @@ export default function SelectTemplates({designer, identifier, onChooseHandler}:
 
         if (currentValue === 'new') {
             onChooseHandler(currentValue, '');
-
             return;
         }
 
@@ -40,7 +39,7 @@ export default function SelectTemplates({designer, identifier, onChooseHandler}:
 
             designer.changeSchema({
                 key: template.schemaKey,
-                name: '',//template.name,
+                name: template.name,
                 schemas: template.template.schemas,
             });
         }
@@ -51,11 +50,9 @@ export default function SelectTemplates({designer, identifier, onChooseHandler}:
             <label htmlFor={identifier}>Selecionar template: </label>
             <select id={identifier} className="form-control" onChange={onChangeHandler}>
                 <option value="new">➕ Novo templare</option>
-                {templates.map((template) => {
-                    return (
-                        <option key={template.key} value={template.key}>📜 {template.name}</option>
-                    )
-                })}
+                {templates.map((template: TemplatesContract): JSX.Element => (
+                    <option key={template.key} value={template.key}>📜 {template.name}</option>
+                ))}
             </select>
         </span>
     );

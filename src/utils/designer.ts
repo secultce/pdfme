@@ -1,5 +1,5 @@
 import {Designer} from "@pdfme/ui";
-import {BLANK_A4_PDF, Schema} from "@pdfme/common";
+import {BLANK_A4_PDF, Schema, Template} from "@pdfme/common";
 import plugins from "../plugins/plugins.ts";
 import SchemaType from "../@types/SchemaTypes.ts";
 
@@ -8,6 +8,38 @@ export class CustomDesigner {
 
     private designer: Designer;
 
+    private static baseTemplateOptions: Template = {
+        schemas: [[]],
+        basePdf: BLANK_A4_PDF,
+        pdfmeVersion: "5.0.0",
+        staticSchema: [
+            {
+                name: "pageNumber",
+                type: "text",
+                content: "Page {currentPage} of {totalPages}",
+                position: {
+                    x: 145,
+                    y: 282
+                },
+                width: 45,
+                height: 10,
+                rotate: 0,
+                alignment: "right",
+                verticalAlignment: "middle",
+                fontSize: 13,
+                lineHeight: 1,
+                characterSpacing: 0,
+                fontColor: "#000000",
+                backgroundColor: "",
+                opacity: 1,
+                strikethrough: false,
+                underline: false,
+                required: false,
+                readOnly: true
+            }
+        ]
+    }
+
     constructor(schema: SchemaType|undefined) {
         let domContainer = CustomDesigner.getDomContainer();
         const schem = schema?.schemas ?? [[]];
@@ -15,9 +47,8 @@ export class CustomDesigner {
         this.designer = new Designer({
             domContainer,
             template: {
+                ...CustomDesigner.baseTemplateOptions,
                 schemas: schem,
-                basePdf: BLANK_A4_PDF,
-                pdfmeVersion: "5.0.0",
             },
             plugins,
         });
@@ -31,20 +62,17 @@ export class CustomDesigner {
     }
 
     public changeSchema(schema: SchemaType): void {
-        console.log(this.designer.getTemplate());
         this.recreateDesigner(schema.schemas);
     }
 
     private recreateDesigner(schemas: Schema[][]): void {
         const domContainer = CustomDesigner.getDomContainer();
-        console.log(schemas);
 
         this.designer = new Designer({
             domContainer,
             template: {
+                ...CustomDesigner.baseTemplateOptions,
                 schemas: schemas,
-                basePdf: BLANK_A4_PDF,
-                pdfmeVersion: "5.0.0",
             },
             plugins,
         });
