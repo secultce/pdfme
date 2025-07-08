@@ -16,9 +16,11 @@ import {
     radioGroup,
 } from '@pdfme/schemas';
 import { signature } from "./signature";
+import fixedVariablesPlugin from "./fixed-variables.ts";
 
 export default {
     Texto: text,
+    'Constantes': fixedVariablesPlugin,
     'Sentença com variáveis': multiVariableText,
     Tabela: table,
     Linha: line,

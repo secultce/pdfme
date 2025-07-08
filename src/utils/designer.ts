@@ -1,5 +1,5 @@
 import {Designer} from "@pdfme/ui";
-import {BLANK_A4_PDF, Schema, Template} from "@pdfme/common";
+import {BLANK_A4_PDF, CommonOptions, Schema, Template, UIOptions} from "@pdfme/common";
 import plugins from "../plugins/plugins.ts";
 import SchemaType from "../@types/SchemaTypes.ts";
 
@@ -51,7 +51,34 @@ export class CustomDesigner {
                 schemas: schem,
             },
             plugins,
+            options: {
+                preventDelete: {
+                    type: ['fixed-text'],
+                },
+            },
         });
+
+        // this.designer.onChange((schema: Schema): void => {
+        //     const currentSchemas: Schema[][] = this.designer.getTemplate().schemas;
+        //     console.log(schema, this.designer.getTemplate());
+        //     console.log(schema.schemas, this.designer.getTemplate().schemas);
+        //
+        //     currentSchemas.forEach((pageSchemas: Schema[], pageIndex: number): void => {
+        //         pageSchemas.forEach((schema: Schema) => {
+        //             if (
+        //                 schema.type === 'fixed-text'
+        //                 && !currentSchemas[pageIndex].find((s: Schema): boolean => s.name === schema.name)
+        //             ) {
+        //                 currentSchemas[pageIndex].push(schema);
+        //             }
+        //         });
+        //     });
+        //
+        //     this.designer.updateTemplate({
+        //         ...this.designer.getTemplate(),
+        //         schemas: currentSchemas,
+        //     });
+        // });
     }
 
     public getDesigner(): Designer {
@@ -75,6 +102,11 @@ export class CustomDesigner {
                 schemas: schemas,
             },
             plugins,
+            options: <CommonOptions>{
+                preventDelete: {
+                    type: ['fixed-text'],
+                },
+            },
         });
     }
 

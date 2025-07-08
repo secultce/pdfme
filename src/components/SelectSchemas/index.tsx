@@ -15,7 +15,10 @@ export default function SelectSchemas({designer, identifier, onChooseHandler}: S
 
     useEffect((): void => {
         Api.getSchemas()
-            .then(setSchemas)
+            .then((schemasTypes: SchemaType[]) => {
+                setSchemas(schemasTypes);
+                designer.changeSchema(schemasTypes[0]);
+            })
             .catch((err: Error): void => {
                 Toast.fire({
                     icon: "error",

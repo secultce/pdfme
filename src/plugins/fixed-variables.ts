@@ -1,43 +1,66 @@
-import {Plugin, Schema} from '@pdfme/common';
+import {
+    PDFRenderProps,
+    Plugin, PropPanelSchema,
+    Schema,
+} from '@pdfme/common';
+import { text } from "@pdfme/schemas";
 
-interface FixedVariables extends Schema {}
+// @ts-ignore
+type FixedVariables = typeof text.defaultSchema;
 
-const FIXED_VARIABLES = ['name', 'email', 'dateOfBirth'];
-
-// Prevents type from being changed
-const fixedSchemaValidator = (schemas: Schema[]) => {
-    schemas.forEach((schema) => {
-        if (!FIXED_VARIABLES.includes(schema.name)) {
-            throw new Error(`Only predefined variables allowed: ${FIXED_VARIABLES.join(', ')}`);
-        }
-    });
-};
-
-const fixedVariablesPlugin: Plugin<Schema> = {
-    pdfmeSchema: {
-        text: {
-            defaultSchema: {
-                fontSize: 12,
-                color: '#000000',
-                alignment: 'left',
-                key: 'name', // default variable
-                type: 'text',
-            },
-            panel: {
-                disabled: ['key', 'type'], // disables editing name/type in the UI
-            },
+const fixedVariablesPlugin: Plugin<FixedVariables> = {
+    ui: text.ui,
+    pdf: text.pdf,
+    propPanel: {
+        schema: ({ options, activeSchema, i18n }) => {
+            return {
+                type: {
+                    title: 'Static',
+                    widget: 'none',
+                },
+                content: {
+                    title: 'Conteúdo',
+                    type: 'string',
+                    widget: 'text',
+                },
+                fontSize: {
+                    title: 'Tamanho da fonte',
+                    type: 'number',
+                },
+                color: {
+                    title: 'Cor',
+                    type: 'string',
+                    widget: 'color',
+                },
+                width: {
+                    title: 'Largura',
+                    type: 'number',
+                },
+                height: {
+                    title: 'Altura',
+                    type: 'number',
+                },
+                name: {
+                    title: i18n('fieldName'),
+                    type: 'string',
+                    readOnly: true,
+                    required: true,
+                    // widget: 'text',
+                },
+            };
         },
-    },
-    viewer: {},
-    designer: {
-        onAddSchema: async (schema) => {
-            if (!FIXED_VARIABLES.includes(schema.key)) {
-                throw new Error(`Variable "${schema.key}" is not allowed.`);
-            }
+        defaultSchema: {
+            name: 'fixedVariables',
+            type: 'fixed-text',
+            position: {
+                x: 0,
+                y: 0,
+            },
+            width: 45,
+            height: 10,
+            content: 'Type something...',
+            readonly: true,
         },
-    },
-    form: {
-        schemaValidation: fixedSchemaValidator,
     },
 };
 
